@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイトル画面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(photo/タイトル画像.jpg);
+            background-size: auto;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #title-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            font-size: 5rem;
+            /* より大きなフォントサイズ */
+            margin-bottom: 5px;
+            text-shadow: 4px 4px 6px #000;
+            /* より強いテキストシャドウ */
+            color: #fff;
+            /* より派手な色 */
+        }
+
+        h2 {
+            font-size: 2rem;
+            /* より大きなフォントサイズ */
+            margin-top: 5px;
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 6px #000;
+            /* より強いテキストシャドウ */
+            color: #fff;
+            /* より派手な色 */
+        }
+
+        #start-button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #fc1e1ee1;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #start-button:hover {
+            background-color: #e61515;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="title-container">
+        <h1>The 筋肉</h1>
+        <h2>ガリとデブこそ筋肉を知れ！！！</h2>
+        <button id="start-button" onclick="startApp()">ゲームスタート！！</button>
+    </div>
+
+    <script>
+        function startApp() {
+            // 別のHTMLファイルに遷移
+            window.location.href = 'muscle_quiz/menu.html';
+        }
+    </script>
+
+</body>
+
+</html>

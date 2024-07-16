@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>難易度選択メニュー</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-image: url(../photo/タイトル画像.jpg);
+            background-size: cover;
+        }
+
+        h1 {
+            font-size: 40px;
+            /* より大きなフォントサイズ */
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 6px #000;
+            /* より強いテキストシャドウ */
+            color: #fff;
+            /* より派手な色 */
+        }
+
+        h2 {
+            font-size: 50px;
+            /* より大きなフォントサイズ */
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 6px #000;
+            /* より強いテキストシャドウ */
+            color: #fff;
+            /* より派手な色 */
+        }
+
+        div {
+            position: relative;
+            top: 20px
+        }
+
+        #menu-button {
+            width: 300px;
+            height: 100px;
+            display: inline-block;
+            margin: 3%;
+            text-decoration: none;
+
+            padding: 15px 30px;
+            font-size: 25px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #menu-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>メニュー画面</h1>
+    <h2>難易度を選択してください</h2>
+    <div>
+        <button id="menu-button" onclick="TrainingApp()" style="background-color:#fc1e1ee1;">トレーニング編</button>
+        <button id="menu-button" onclick="knowledgeApp()" style="background-color:#1e77fce1;">知識編</button>
+        <button id="menu-button" onclick="BodybuilderApp()" style="background-color:#fc891ee1;">ボディビルダー編</button>
+    </div>
+
+    <script>
+        function TrainingApp() {
+            // 別のHTMLファイルに遷移
+            window.location.href = 'html/training.html';
+        }
+        function knowledgeApp() {
+            // 別のHTMLファイルに遷移
+            window.location.href = 'html/knowledge.html';
+        }
+        function BodybuilderApp() {
+            // 別のHTMLファイルに遷移
+            window.location.href = 'html/bodybuilder.html';
+        }
+    </script>
+</body>
+
+</html>
