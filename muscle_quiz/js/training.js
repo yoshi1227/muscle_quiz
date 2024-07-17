@@ -284,7 +284,7 @@ function shuffleQuiz(array) {
     }
     return array;
 }
-let quizId = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"];
+let quizId = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
 shuffleQuiz(quizId);
 
 // 現在の質問数
