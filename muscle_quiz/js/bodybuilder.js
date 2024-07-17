@@ -176,10 +176,10 @@ let quizId = ["01", "02", "03", "04", "05" , "06" , "07" , "08" , "09" , "10","1
 shuffleQuiz(quizId);
 
 //現在の質問数
-let $currentNum = 0;
+let currentNum = 0;
 
 //得点
-let $pointPerCorrect = 10;
+let pointPerCorrect = 10;
 
 
 // クイズオブジェクト
