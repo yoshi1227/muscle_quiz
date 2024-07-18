@@ -1,14 +1,14 @@
 'use strict';
 
 //合計問題数
-let $questionTotalNum = 10;
+let questionTotalNum = 10;
 
 /* -----------------------------------------------
 筋トレ_ボディビルダー編　　クイズ
 -------------------------------------------------- */
 const prefecturalCapital = [
     {
-        id: "1",
+        id: "01",
         question: "元ボディビルダーという経歴を持つ、「コマンドー」などの映画に主演した筋肉自慢の俳優は誰？",
         answer01: "アーノルド・シュワルツェネッガー",
         answer02: "シルベスター・スタローン",
@@ -16,7 +16,7 @@ const prefecturalCapital = [
         answer04: "レオナルド・ディカプリオ",
     },
     {
-        id: "2",
+        id: "02",
         question: "日本人初のMr.Olympia出場者のボディビルダーは誰？",
         answer01: "山岸秀匡",
         answer02: "横川尚隆",
@@ -24,7 +24,7 @@ const prefecturalCapital = [
         answer04: "中山翔二",
     },
     {
-        id: "3",
+        id: "03",
         question: "ボディビル界のゴールデンボーイと言われた、2010年から2018年まで日本1に輝いたボディビルダーは誰？",
         answer01: "鈴木雅",
         answer02: "あばれる君",
@@ -32,7 +32,7 @@ const prefecturalCapital = [
         answer04: "なかやまきんに君",
     },
     {
-        id: "4",
+        id: "04",
         question: "Mr.Olympiaで7連覇をしたボディビルダーは誰？",
         answer01: "フィル・ヒース",
         answer02: "ショーンローデン",
@@ -40,7 +40,7 @@ const prefecturalCapital = [
         answer04: "横川尚隆",
     },
     {
-        id: "5",
+        id: "05",
         question: "男性のボディビルの種目で正しくないものはどれ？",
         answer01: "メンズパフォーマンス",
         answer02: "ボディビル",
@@ -48,7 +48,7 @@ const prefecturalCapital = [
         answer04: "クラシックフィジーク",
     },
     {
-        id: "6",
+        id: "06",
         question: "女性のボディビルの種目で正しくないものはどれ？",
         answer01: "ボディビル",
         answer02: "ビキニフィットネス",
@@ -56,7 +56,7 @@ const prefecturalCapital = [
         answer04: "女子フィジーク",
     },
     {
-        id: "7",
+        id: "07",
         question: "メンズフィジークの説明として正しくないものはどれ？",
         answer01: "筋肉の大きさを競う",
         answer02: "バランスの取れた筋肉やシルエットを競う",
@@ -64,7 +64,7 @@ const prefecturalCapital = [
         answer04: "手首や足首などに装飾品を身に着けない",
     },
     {
-        id: "8",
+        id: "08",
         question: "日本のボディビルの競技人口は何人？",
         answer01: "6000人以上",
         answer02: "4000人程度",
@@ -72,7 +72,7 @@ const prefecturalCapital = [
         answer04: "500以下",
     },
     {
-        id: "9",
+        id: "09",
         question: "ボディビル大会での審査基準として正しくないものは？",
         answer01: "体重",
         answer02: "全体の発達度",
@@ -172,6 +172,7 @@ function shuffleQuiz(array) {
     }
     return array;
 }
+
 let quizId = ["01", "02", "03", "04", "05" , "06" , "07" , "08" , "09" , "10","11","12","13","14","15","16","17","18","19"];
 shuffleQuiz(quizId);
 
@@ -219,10 +220,14 @@ QuestionObject.prototype.init = function () {
         let value = quizId[currentNum]; // 最初は0（1番目）
         // 次の質問を取得
         let nextQuestion = _this.searchQuestion(value);
-        // 次の質問に切り替える
-        _this.changeQuestion(nextQuestion);
-        // 回答のシャッフル
-        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+        if (nextQuestion) {
+            // 次の質問に切り替える
+            _this.changeQuestion(nextQuestion);
+            // 回答のシャッフル
+            _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+        } else {
+            console.error('Question not found for ID:', value);
+        }
     });
 
     // ボタンクリック
@@ -256,22 +261,25 @@ QuestionObject.prototype.init = function () {
                     // 次の質問を取得
                     let nextQuestion = _this.searchQuestion(value);
 
-                    // 次の質問に切り替える
-                    _this.changeQuestion(nextQuestion);
-
-                    document.getElementById("question-audio").play(); //出題音
-
-                    // クラスを取る
-                    _this.questionButton.forEach(function (btn) {
-                        btn.classList.remove('is-checked');
-                    });
-                    document.querySelectorAll('.quiz-answer').forEach(function (ans) {
-                        ans.classList.remove('is-correct', 'is-incorrect');
-                    });
-
-                    // 回答のシャッフル
-                    _this.shuffleAnswer(document.querySelector('.quiz-answer'));
-
+                    if (nextQuestion) {
+                        // 次の質問に切り替える
+                        _this.changeQuestion(nextQuestion);
+                
+                        document.getElementById("question-audio").play(); //出題音
+                
+                        // クラスを取る
+                        _this.questionButton.forEach(function (btn) {
+                            btn.classList.remove('is-checked');
+                        });
+                        document.querySelectorAll('.quiz-answer').forEach(function (ans) {
+                            ans.classList.remove('is-correct', 'is-incorrect');
+                        });
+                
+                        // 回答のシャッフル
+                        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+                    } else {
+                        console.error('Question not found for ID:', value);
+                    }
                 }, 1000);
             }
             return false;
@@ -290,6 +298,10 @@ QuestionObject.prototype.searchQuestion = function (questionId) {
 };
 
 QuestionObject.prototype.changeQuestion = function (nextQuestion) {
+    if (!nextQuestion) {
+        console.error('No next question available');
+        return;
+    }
     // 質問文の入れ替え
     this.questionName.textContent = nextQuestion.question;
 

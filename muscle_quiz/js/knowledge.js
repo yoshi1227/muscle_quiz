@@ -1,7 +1,7 @@
 'use strict';
 
 //合計問題数
-let $questionTotalNum = 10;
+let questionTotalNum = 10;
 
 /* -----------------------------------------------
 筋トレ_知識編　　クイズ
@@ -213,7 +213,7 @@ function shuffleQuiz(array) {
     }
     return array;
 }
-let quizId = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32"];
+let quizId = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"];
 shuffleQuiz(quizId);
 
 // 現在の質問数
@@ -259,10 +259,14 @@ QuestionObject.prototype.init = function () {
         let value = quizId[currentNum]; // 最初は0（1番目）
         // 次の質問を取得
         let nextQuestion = _this.searchQuestion(value);
-        // 次の質問に切り替える
-        _this.changeQuestion(nextQuestion);
-        // 回答のシャッフル
-        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+        if (nextQuestion) {
+            // 次の質問に切り替える
+            _this.changeQuestion(nextQuestion);
+            // 回答のシャッフル
+            _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+        } else {
+            console.error('Question not found for ID:', value);
+        }
     });
 
     // ボタンクリック
@@ -296,22 +300,25 @@ QuestionObject.prototype.init = function () {
                     // 次の質問を取得
                     let nextQuestion = _this.searchQuestion(value);
 
-                    // 次の質問に切り替える
-                    _this.changeQuestion(nextQuestion);
-
-                    document.getElementById("question-audio").play(); //出題音
-
-                    // クラスを取る
-                    _this.questionButton.forEach(function (btn) {
-                        btn.classList.remove('is-checked');
-                    });
-                    document.querySelectorAll('.quiz-answer').forEach(function (ans) {
-                        ans.classList.remove('is-correct', 'is-incorrect');
-                    });
-
-                    // 回答のシャッフル
-                    _this.shuffleAnswer(document.querySelector('.quiz-answer'));
-
+                    if (nextQuestion) {
+                        // 次の質問に切り替える
+                        _this.changeQuestion(nextQuestion);
+                
+                        document.getElementById("question-audio").play(); //出題音
+                
+                        // クラスを取る
+                        _this.questionButton.forEach(function (btn) {
+                            btn.classList.remove('is-checked');
+                        });
+                        document.querySelectorAll('.quiz-answer').forEach(function (ans) {
+                            ans.classList.remove('is-correct', 'is-incorrect');
+                        });
+                
+                        // 回答のシャッフル
+                        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+                    } else {
+                        console.error('Question not found for ID:', value);
+                    }
                 }, 1000);
             }
             return false;
@@ -330,6 +337,10 @@ QuestionObject.prototype.searchQuestion = function (questionId) {
 };
 
 QuestionObject.prototype.changeQuestion = function (nextQuestion) {
+    if (!nextQuestion) {
+        console.error('No next question available');
+        return;
+    }
     // 質問文の入れ替え
     this.questionName.textContent = nextQuestion.question;
 
