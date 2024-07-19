@@ -252,6 +252,7 @@ function QuestionObject(target) {
 QuestionObject.prototype.init = function () {
     let _this = this;
     let score = 0;  
+    let flag = Boolean(1);
     
     // ウインドウ読み込み時
     window.addEventListener('load', function () {
@@ -273,13 +274,17 @@ QuestionObject.prototype.init = function () {
     this.questionButton.forEach(function (button) {
         button.addEventListener("click", function () {
             let currentQuestionNum = currentNum;
-            if (button.classList.contains('button01')) {
+            
+            if (button.classList.contains('button01') && flag) {
                 button.closest('.quiz-answer').classList.add('is-correct');
                 document.getElementById("correct").play();
                 score = score + pointPerCorrect;
-            } else {
+                console.log(score);
+                flag = Boolean(0);
+            } else if (flag) {
                 button.closest('.quiz-answer').classList.add('is-incorrect');
                 document.getElementById("incorrect").play();
+                flag = Boolean(0);
             }
 
             button.classList.add('is-checked');
@@ -314,6 +319,8 @@ QuestionObject.prototype.init = function () {
                             ans.classList.remove('is-correct', 'is-incorrect');
                         });
                 
+                        flag = Boolean(1);
+
                         // 回答のシャッフル
                         _this.shuffleAnswer(document.querySelector('.quiz-answer'));
                     } else {

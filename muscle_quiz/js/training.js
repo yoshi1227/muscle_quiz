@@ -322,7 +322,7 @@ function QuestionObject(target) {
 
 QuestionObject.prototype.init = function () {
     let _this = this;
-    let score = 0;  
+    let score = 0;
     
     // ウインドウ読み込み時
     window.addEventListener('load', function () {
