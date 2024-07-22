@@ -323,30 +323,38 @@ function QuestionObject(target) {
 QuestionObject.prototype.init = function () {
     let _this = this;
     let score = 0;
-    
+    let flag = Boolean(1);    
     // ウインドウ読み込み時
     window.addEventListener('load', function () {
         // 値を取得
         let value = quizId[currentNum]; // 最初は0（1番目）
         // 次の質問を取得
         let nextQuestion = _this.searchQuestion(value);
-        // 次の質問に切り替える
-        _this.changeQuestion(nextQuestion);
-        // 回答のシャッフル
-        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+        if (nextQuestion) {
+            // 次の質問に切り替える
+            _this.changeQuestion(nextQuestion);
+            // 回答のシャッフル
+            _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+        } else {
+            console.error('Question not found for ID:', value);
+        }    
     });
 
     // ボタンクリック
     this.questionButton.forEach(function (button) {
         button.addEventListener("click", function () {
             let currentQuestionNum = currentNum;
-            if (button.classList.contains('button01')) {
+
+            if (button.classList.contains('button01') && flag) {
                 button.closest('.quiz-answer').classList.add('is-correct');
                 document.getElementById("correct").play();
                 score = score + pointPerCorrect;
-            } else {
+                console.log(score);
+                flag = Boolean(0);
+            } else if (flag) {
                 button.closest('.quiz-answer').classList.add('is-incorrect');
                 document.getElementById("incorrect").play();
+                flag = Boolean(0);
             }
 
             button.classList.add('is-checked');
@@ -367,22 +375,27 @@ QuestionObject.prototype.init = function () {
                     // 次の質問を取得
                     let nextQuestion = _this.searchQuestion(value);
 
-                    // 次の質問に切り替える
-                    _this.changeQuestion(nextQuestion);
+                    if (nextQuestion) {
+                        // 次の質問に切り替える
+                        _this.changeQuestion(nextQuestion);
 
-                    document.getElementById("question-audio").play(); //出題音
+                        document.getElementById("question-audio").play(); //出題音
 
-                    // クラスを取る
-                    _this.questionButton.forEach(function (btn) {
-                        btn.classList.remove('is-checked');
-                    });
-                    document.querySelectorAll('.quiz-answer').forEach(function (ans) {
-                        ans.classList.remove('is-correct', 'is-incorrect');
-                    });
+                        // クラスを取る
+                        _this.questionButton.forEach(function (btn) {
+                            btn.classList.remove('is-checked');
+                        });
+                        document.querySelectorAll('.quiz-answer').forEach(function (ans) {
+                            ans.classList.remove('is-correct', 'is-incorrect');
+                        });
 
-                    // 回答のシャッフル
-                    _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+                        flag = Boolean(1);
 
+                        // 回答のシャッフル
+                        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+                    } else {
+                        console.error('Question not found for ID:', value);
+                    }    
                 }, 1000);
             }
             return false;
@@ -428,4 +441,3 @@ let quiz = document.querySelector('.quiz');
 if (quiz) {
     let queInstance = new QuestionObject(quiz);
 }
-
