@@ -326,6 +326,7 @@ QuestionObject.prototype.init = function () {
     let flag = Boolean(1);    
     // ウインドウ読み込み時
     window.addEventListener('load', function () {
+
         // 値を取得
         let value = quizId[currentNum]; // 最初は0（1番目）
         // 次の質問を取得
@@ -345,58 +346,79 @@ QuestionObject.prototype.init = function () {
         button.addEventListener("click", function () {
             let currentQuestionNum = currentNum;
 
-            if (button.classList.contains('button01') && flag) {
-                button.closest('.quiz-answer').classList.add('is-correct');
-                document.getElementById("correct").play();
-                score = score + pointPerCorrect;
-                console.log(score);
-                flag = Boolean(0);
-            } else if (flag) {
-                button.closest('.quiz-answer').classList.add('is-incorrect');
-                document.getElementById("incorrect").play();
-                flag = Boolean(0);
-            }
+            if (flag) {
+                // すべてのボタンを無効化
+                console.log("123");
+                _this.questionButton.forEach(function (btn) {
+                    btn.disabled = true;
+                });
 
-            button.classList.add('is-checked');
+                if (button.classList.contains('button01') && flag) {
+                    button.closest('.quiz-answer').classList.add('is-correct');
+                    document.getElementById("correct").play();
+                    score = score + pointPerCorrect;
+                    console.log(score);
+                    flag = Boolean(0);
+                } else if (flag) {
+                    button.closest('.quiz-answer').classList.add('is-incorrect');
+                    document.getElementById("incorrect").play();
+                    flag = Boolean(0);
+                }
 
-            if (currentNum + 1 === questionTotalNum) {
-                setTimeout(function () {
-                    document.querySelector('.finish').classList.add('is-show');
-                    document.querySelector('.score-wrap .score').textContent = score;
-                }, 1000);
-            } else {
-                setTimeout(function () {
-                    // 現在の数字の更新
-                    currentNum = currentQuestionNum + 1;
+                // 正解のボタンの色を赤に変更
+                document.querySelectorAll('.button01').forEach(function (btn) {
+                    btn.style.backgroundColor = '#00bfff';
+                });
 
-                    // 次の質問番号を取得
-                    let value = quizId[currentNum];
+                button.classList.add('is-checked');
 
-                    // 次の質問を取得
-                    let nextQuestion = _this.searchQuestion(value);
+                if (currentNum + 1 === questionTotalNum) {
+                    setTimeout(function () {
+                        document.querySelector('.finish').classList.add('is-show');
+                        document.querySelector('.score-wrap .score').textContent = score;
+                    }, 1000);
+                } else {
+                    setTimeout(function () {
+                        // 現在の数字の更新
+                        currentNum = currentQuestionNum + 1;
 
-                    if (nextQuestion) {
-                        // 次の質問に切り替える
-                        _this.changeQuestion(nextQuestion);
+                        // 次の質問番号を取得
+                        let value = quizId[currentNum];
 
-                        document.getElementById("question-audio").play(); //出題音
+                        // 次の質問を取得
+                        let nextQuestion = _this.searchQuestion(value);
 
-                        // クラスを取る
-                        _this.questionButton.forEach(function (btn) {
-                            btn.classList.remove('is-checked');
-                        });
-                        document.querySelectorAll('.quiz-answer').forEach(function (ans) {
-                            ans.classList.remove('is-correct', 'is-incorrect');
-                        });
+                        if (nextQuestion) {
+                            // 次の質問に切り替える
+                            _this.changeQuestion(nextQuestion);
 
-                        flag = Boolean(1);
+                            //出題音
+                            document.getElementById("question-audio").play();
 
-                        // 回答のシャッフル
-                        _this.shuffleAnswer(document.querySelector('.quiz-answer'));
-                    } else {
-                        console.error('Question not found for ID:', value);
-                    }    
-                }, 1000);
+                            // ボタンを有効化し、色を元に戻す
+                            _this.questionButton.forEach(function (btn) {
+                                btn.disabled = false;
+                                btn.classList.remove('is-checked');
+                                btn.style.backgroundColor = ''; // 背景色を元に戻す
+                            });
+
+                            // クラスを取る
+                            _this.questionButton.forEach(function (btn) {
+                                btn.classList.remove('is-checked');
+                            });
+                            document.querySelectorAll('.quiz-answer').forEach(function (ans) {
+                                ans.classList.remove('is-correct', 'is-incorrect');
+                            });
+
+                            flag = Boolean(1);
+
+                            // 回答のシャッフル
+                            _this.shuffleAnswer(document.querySelector('.quiz-answer'));
+                        } else {
+                            console.error('Question not found for ID:', value);
+                        }    
+                    }, 2000);
+                }
             }
             return false;
         });
