@@ -12,22 +12,22 @@
             text-align: center;
             margin: 50px;
             background-image: url(../photo/タイトル画像.jpg);
+             /* 画像を常に天地左右の中央に配置 */
+            background-position: center center;
+            /* 画像をタイル状に繰り返し表示しない */
+            background-repeat: no-repeat;
+            /* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+            background-attachment: fixed;
+            /* 表示するコンテナの大きさに基づいて、背景画像を調整 */
             background-size: cover;
-        }
-
-        h1 {
-            font-size: 40px;
-            /* より大きなフォントサイズ */
-            margin-bottom: 20px;
-            text-shadow: 4px 4px 6px #000;
-            /* より強いテキストシャドウ */
-            color: #fff;
-            /* より派手な色 */
+            /* 背景画像が読み込まれる前に表示される背景のカラー */
+            background-color: #464646;
         }
 
         h2 {
             font-size: 50px;
             /* より大きなフォントサイズ */
+            margin-top: 10%;
             margin-bottom: 20px;
             text-shadow: 4px 4px 6px #000;
             /* より強いテキストシャドウ */
@@ -36,8 +36,7 @@
         }
 
         div {
-            position: relative;
-            top: 20px
+            margin: 0 auto;
         }
 
         #menu-button {
@@ -59,12 +58,27 @@
         #menu-button:hover {
             transform: scale(1.1);
         }
+
+        @media only screen and (max-width: 750px) {
+            body {
+                background-image: url(../photo/タイトル画像_スマホ.jpg);
+            }
+            h2{
+                font-size: 25px;
+            }
+            #menu-button{
+                width: 250px;
+                height: 70px;
+                font-size: 15px;
+                margin: 3% auto;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <h1>メニュー画面</h1>
-    <h2>ジャンルを選択してください</h2>
+    <!-- <h1>メニュー画面</h1> -->
+    <h2>トレーニングメニューを選択してください</h2>
     <div>
         <button id="menu-button" onclick="TrainingApp()" style="background-color:#fc1e1ee1;">トレーニング編</button>
         <button id="menu-button" onclick="knowledgeApp()" style="background-color:#1e77fce1;">知識編</button>
@@ -72,6 +86,7 @@
     </div>
 
     <script>
+        const audio = new Audio('../bgm/question.mp3'); // 出題音のパスを指定
         function TrainingApp() {
             // 別のHTMLファイルに遷移
             window.location.href = 'html/training.html';

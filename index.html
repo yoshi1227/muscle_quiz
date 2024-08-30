@@ -10,6 +10,16 @@
         body {
             font-family: Arial, sans-serif;
             background-image: url(photo/タイトル画像.jpg);
+             /* 画像を常に天地左右の中央に配置 */
+            background-position: center center;
+            /* 画像をタイル状に繰り返し表示しない */
+            background-repeat: no-repeat;
+            /* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+            background-attachment: fixed;
+            /* 表示するコンテナの大きさに基づいて、背景画像を調整 */
+            background-size: cover;
+            /* 背景画像が読み込まれる前に表示される背景のカラー */
+            background-color: #464646;
             background-size: auto;
             color: #fff;
             text-align: center;
@@ -48,16 +58,28 @@
         #start-button {
             padding: 15px 30px;
             font-size: 1.5em;
-            background-color: #fc1e1ee1;
-            border: none;
+            background-color: #d27110;
+            border: 2px solid #654321;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         #start-button:hover {
-            background-color: #e61515;
+            background-color: #ff8000;
             transform: scale(1.1);
+        }
+
+        @media only screen and (max-width: 750px) {
+            body {
+                background-image: url(photo/タイトル画像_スマホ.jpg);
+            }
+            h2{
+                font-size: 25px;
+            }
+            #start-button{
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -65,9 +87,9 @@
 <body>
 
     <div id="title-container">
-        <h1>The 筋肉</h1>
+        <h1>Pump Quiz</h1>
         <h2>筋肉に詳しくないの、危機感持ったほうがいい</h2>
-        <button id="start-button" onclick="startApp()">筋トレスタート！！</button>
+        <button id="start-button" onclick="startApp()">筋トレスタート</button>
     </div>
 
     <script>

@@ -293,6 +293,13 @@ let currentNum = 0;
 // 得点
 let pointPerCorrect = 10;
 
+function sleep(waitMsec) {
+    var startMsec = new Date();
+
+    // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
+    while (new Date() - startMsec < waitMsec);
+}
+
 // クイズオブジェクト
 function QuestionObject(target) {
     // 質問の番号
@@ -326,7 +333,7 @@ QuestionObject.prototype.init = function () {
     let flag = Boolean(1);    
     // ウインドウ読み込み時
     window.addEventListener('load', function () {
-
+        
         // 値を取得
         let value = quizId[currentNum]; // 最初は0（1番目）
         // 次の質問を取得
@@ -348,26 +355,32 @@ QuestionObject.prototype.init = function () {
 
             if (flag) {
                 // すべてのボタンを無効化
-                console.log("123");
                 _this.questionButton.forEach(function (btn) {
                     btn.disabled = true;
                 });
 
                 if (button.classList.contains('button01') && flag) {
                     button.closest('.quiz-answer').classList.add('is-correct');
-                    document.getElementById("correct").play();
+                    setTimeout(function () {
+                        document.getElementById("correct").play();
+                    }, 0);
                     score = score + pointPerCorrect;
                     console.log(score);
                     flag = Boolean(0);
                 } else if (flag) {
                     button.closest('.quiz-answer').classList.add('is-incorrect');
-                    document.getElementById("incorrect").play();
+                    setTimeout(function () {
+                        document.getElementById("incorrect").play();
+                    }, 0);
                     flag = Boolean(0);
                 }
 
+                // 選択肢の枠組みの色を赤に統一
+                button.style.borderColor = 'red';
+
                 // 正解のボタンの色を赤に変更
                 document.querySelectorAll('.button01').forEach(function (btn) {
-                    btn.style.backgroundColor = '#00bfff';
+                    btn.style.backgroundColor = 'red';
                 });
 
                 button.classList.add('is-checked');
@@ -389,17 +402,27 @@ QuestionObject.prototype.init = function () {
                         let nextQuestion = _this.searchQuestion(value);
 
                         if (nextQuestion) {
+                            //出題音
+                            setTimeout(function () {
+                                document.getElementById("question-audio").play();
+                            }, 0);
+
+                            sleep(800);
+
                             // 次の質問に切り替える
                             _this.changeQuestion(nextQuestion);
 
                             //出題音
-                            document.getElementById("question-audio").play();
+                            setTimeout(function () {
+                                document.getElementById("question-audio").play();
+                            }, 0);
 
                             // ボタンを有効化し、色を元に戻す
                             _this.questionButton.forEach(function (btn) {
                                 btn.disabled = false;
                                 btn.classList.remove('is-checked');
                                 btn.style.backgroundColor = ''; // 背景色を元に戻す
+                                btn.style.borderColor = ''; // 枠組みの色を元に戻す
                             });
 
                             // クラスを取る
@@ -417,7 +440,7 @@ QuestionObject.prototype.init = function () {
                         } else {
                             console.error('Question not found for ID:', value);
                         }    
-                    }, 2000);
+                    }, 2300);
                 }
             }
             return false;
